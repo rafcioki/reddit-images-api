@@ -10,12 +10,12 @@ const _splitExtensions = (extensions) => {
     return gluedExtensions;
 }
 
-const FilterNonImageUrls = (extensions, urls) => {
+const filterOutEntriesWithIncorrectImageUrl = (extensions, entries) => {
   const allowedExtensions = _splitExtensions(extensions);
 
-  return urls.filter(url => {
+  return entries.filter(entry => {
     for (let i = 0; i < allowedExtensions.length; ++i) {
-      if (url.endsWith(allowedExtensions[i])) {
+      if (entry.imageUrl.endsWith(allowedExtensions[i])) {
         return true;
       }
     }
@@ -24,4 +24,4 @@ const FilterNonImageUrls = (extensions, urls) => {
   });
 };
 
-export default FilterNonImageUrls;
+export default filterOutEntriesWithIncorrectImageUrl;
