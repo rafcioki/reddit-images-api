@@ -3,11 +3,11 @@ import * as constants from './consts';
 import filterOutEntriesWithIncorrectImageUrl from './parsing';
 
 export function getPosts(subreddit,
-    sort = constants.SortTop,
-    timespan = constants.TimespanAll,
+    after = '',
     count = constants.DefaultFetchSize,
-    after = '') {
-  return rp(`https://www.reddit.com/r/${subreddit}/${sort}.json?sort=${sort}&t=${timespan}&count=${count}&after=${after}`)
+    sort = constants.SortTop,
+    timespan = constants.TimespanAll) {
+  return rp(`https://www.reddit.com/r/${subreddit}/${sort}.json?after=${after}&count=${count}&sort=${sort}&t=${timespan}`)
     .then(response => {
       const parsedRootJson = JSON.parse(response);
 
@@ -30,10 +30,13 @@ export function getPosts(subreddit,
 };
 
 export function getImages(subreddit,
-    sort = constants.SORT_TOP,
-    timespan = constants.TimespanAll,
+    after = '',
     count = constants.DefaultFetchSize,
-    after = '') {
-      return getPosts(subreddit, sort, timespan, count, after)
+    sort = constants.SORT_TOP,
+    timespan = constants.TimespanAll
+    ) {
+      return getPosts(subreddit, after, count, sort, timespan)
         .then(posts => posts.map(post => post.imageUrl));
 }
+
+export default constants;
