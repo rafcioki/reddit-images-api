@@ -13,7 +13,7 @@ export function getPosts(subreddit,
 
       const posts = parsedRootJson.data.children.map(child => {
         return {
-          id: child.data.id,
+          id: child.data.name,
           score: child.data.score,
           created_utc: child.data.created_utc,
           permalink: child.data.permalink,
@@ -21,22 +21,19 @@ export function getPosts(subreddit,
           imageUrl: child.data.url
         }
       });
+
+      const lastPostId = posts[posts.length - 1].id;
+      const nextCount = count + constants.DefaultFetchSize;
       
-      return filterOutEntriesWithIncorrectImageUrl(constants.AllowedImageExtensions, posts);
+      return {
+        posts: filterOutEntriesWithIncorrectImageUrl(constants.AllowedImageExtensions, posts),
+        lastPostId,
+        nextCount
+      };
     })
     .catch(error => {
       console.log(error);
     });
 };
-
-export function getImages(subreddit,
-    after = '',
-    count = constants.DefaultFetchSize,
-    sort = constants.SORT_TOP,
-    timespan = constants.TimespanAll
-    ) {
-      return getPosts(subreddit, after, count, sort, timespan)
-        .then(posts => posts.map(post => post.imageUrl));
-}
 
 export default constants;
