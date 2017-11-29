@@ -7,7 +7,7 @@ export function getPosts(subreddit,
     count = constants.DefaultFetchSize,
     sort = constants.SortTop,
     timespan = constants.TimespanAll) {
-  return rp(`https://www.reddit.com/r/${subreddit}/${sort}.json?after=${after}&count=${count}&sort=${sort}&t=${timespan}`)
+  return rp(`https://www.reddit.com/r/${subreddit}/${sort}.json?sort=${sort}&t=${timespan}&after=${after}&count=${count}`)
     .then(response => {
       const parsedRootJson = JSON.parse(response);
 
